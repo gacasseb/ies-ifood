@@ -1,10 +1,23 @@
 #include <iostream>
+#include <cstdlib>
 
 #include "cliente.h"
 
 using namespace std;
 
-void cliente() {
+typedef struct {
+    Cliente model_cliente[50];
+    int prox;
+} LISTA;
+
+LISTA* cria_lista_cliente() {
+    LISTA *lista;
+    lista = (LISTA *) malloc(sizeof(LISTA));
+    lista->prox = 0;
+    return lista;
+}
+
+void cliente(LISTA* l) {
 
     char entrada;
 
@@ -16,6 +29,12 @@ void cliente() {
         cout << "4 - Remover cliente" << "\n";
 
         cin >> entrada;
+
+        if ( entrada == '2' ) {
+            l->model_cliente[l->prox].insereCliente();
+            cout << l->model_cliente[l->prox].nome_cliente;
+            l->prox++;
+        }
     }
 }
 
@@ -37,7 +56,10 @@ void alimento() {
 int main()
 {
     char entrada;
-    
+
+    LISTA *l = NULL;
+    l = cria_lista_cliente();
+
     while ( entrada != '0' ) {
         // Imprime o menu
         cout << "0 - Sair" << "\n";
@@ -48,13 +70,15 @@ int main()
         cin >> entrada;
 
         if ( entrada == '1' ) {
-            cliente();
+            cliente(l);
         }
 
         if ( entrada == '2' ) {
             alimento();
         }
     }
+
+    free(l);
 
     return 1;
 }
