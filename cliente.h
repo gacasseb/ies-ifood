@@ -1,19 +1,31 @@
 #include <iostream>
+#include <string>
 
 using namespace std;
 
 class Cliente {
     private:
-        int id;
-        string data_nascimento;
         bool validaNome();
     public:
+        int id;
         string nome_cliente;
+        string data_nascimento;
         int insereCliente();
+        bool idExists(Cliente *model_cliente);
         bool validate();
 };
 
 int Cliente::insereCliente() {
+
+    string res;
+    cout << "Voce deseja inserir o ID? Digite 1 caso queira, 0 caso nao queira (Caso nao, sera inserido automaticamente)" << "\n";
+    std::getline(std::cin >> std::ws, res);
+
+    if ( res == "1" ) {
+        cout << "Digita um ID usando apenas digitos" << "\n";
+        cin >> this->id;
+    }
+
     cout << "Nome completo: " << "\n";
     std::getline(std::cin >> std::ws, this->nome_cliente);
 
@@ -41,6 +53,19 @@ bool Cliente::validaNome() {
 
     if ( this->nome_cliente.length() > 0 ) {
         return true;
+    }
+
+    return false;
+}
+
+bool Cliente::idExists(Cliente *clientes) {
+
+    int i;
+
+    for (i=0; i < 50; i++) {
+        if ( this->id == clientes[i].id ) {
+            return true;
+        }
     }
 
     return false;

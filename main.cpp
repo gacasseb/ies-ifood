@@ -8,6 +8,18 @@ using namespace std;
 Cliente model_cliente[50];
 int contador_cliente;
 
+bool idExists(int id) {
+    
+    int i;
+    for ( i = 0; i < 50 ; i++ ) {
+        if ( model_cliente[i].id == id) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 void cliente() {
 
     char entrada;
@@ -23,6 +35,10 @@ void cliente() {
 
         if ( entrada == '2' ) {
             model_cliente[contador_cliente].insereCliente();
+            
+            if ( ! model_cliente[contador_cliente].idExists(model_cliente) ) {
+                // Incrementa
+            }
         }
     }
 }
