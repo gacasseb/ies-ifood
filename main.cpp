@@ -5,19 +5,10 @@
 
 using namespace std;
 
-typedef struct {
-    Cliente model_cliente[50];
-    int prox;
-} LISTA;
+Cliente model_cliente[50];
+int contador_cliente;
 
-LISTA* cria_lista_cliente() {
-    LISTA *lista;
-    lista = (LISTA *) malloc(sizeof(LISTA));
-    lista->prox = 0;
-    return lista;
-}
-
-void cliente(LISTA* l) {
+void cliente() {
 
     char entrada;
 
@@ -31,9 +22,7 @@ void cliente(LISTA* l) {
         cin >> entrada;
 
         if ( entrada == '2' ) {
-            l->model_cliente[l->prox].insereCliente();
-            cout << l->model_cliente[l->prox].nome_cliente;
-            l->prox++;
+            model_cliente[contador_cliente].insereCliente();
         }
     }
 }
@@ -56,9 +45,7 @@ void alimento() {
 int main()
 {
     char entrada;
-
-    LISTA *l = NULL;
-    l = cria_lista_cliente();
+    contador_cliente = 0;
 
     while ( entrada != '0' ) {
         // Imprime o menu
@@ -70,15 +57,13 @@ int main()
         cin >> entrada;
 
         if ( entrada == '1' ) {
-            cliente(l);
+            cliente();
         }
 
         if ( entrada == '2' ) {
             alimento();
         }
     }
-
-    free(l);
 
     return 1;
 }

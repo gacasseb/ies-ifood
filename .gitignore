@@ -1,3 +1,5 @@
 /bim passado
 main.exe
 .vscode
+main.o
+main.S
