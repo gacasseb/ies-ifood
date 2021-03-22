@@ -3,6 +3,8 @@
 typedef struct {
     int id;
     char *nome_completo;
+    char *data_nascimento;
+    int qtd_viagem;
 } CLIENTE;
 
 typedef struct {
@@ -21,6 +23,9 @@ LISTA_CLIENTE * criaListaCliente()
 CLIENTE registraCliente( LISTA_CLIENTE *l, int altera )
 {
     char nome[255];
+    char data_nascimento[255];
+    char viagens[15];
+    char entrada;
 
     CLIENTE cliente;
     int id;
@@ -31,15 +36,21 @@ CLIENTE registraCliente( LISTA_CLIENTE *l, int altera )
         printf("0 - Nao\n");
         printf("1 - Sim\n");
 
-        char entrada;
         scanf("%c", &entrada);
         getchar();
 
         // Faz a inserção do id
         if ( entrada == '1' ) {
+
             printf("Insira um ID\n");
             scanf("%d", &id);
             getchar();
+            while ( foundById(l, id) >= 0 ) {
+                printf("Um cliente com este ID ja foi cadastrado, insira outro id.\n");
+                scanf("%d", &id);
+                getchar();
+            }
+
         } else {
             id = buscaUltimoId(l);
             id++;
@@ -48,12 +59,34 @@ CLIENTE registraCliente( LISTA_CLIENTE *l, int altera )
         cliente.id = id;
     }
 
-
     // Faz a inserção do nome
     printf("Insira o nome\n");
     gets(nome);
     cliente.nome_completo = (char*) malloc(sizeof(nome));
     strcpy(cliente.nome_completo, nome);
+
+    // Faz a inserção data de nascimento
+    printf("Insira sua data de nascimento (dd/mm/aaaa)\n");
+    gets(data_nascimento);
+    cliente.data_nascimento = (char*) malloc(sizeof(data_nascimento));
+    strcpy(cliente.data_nascimento, data_nascimento);
+
+    // Faz a inserção da quantidade de viagens
+    printf("Voce deseja inserir a quantidade de viagens?\n");
+    printf("0 - Nao\n");
+    printf("1 - Sim\n");
+    scanf("%c", &entrada);
+    getchar();
+
+    if ( entrada == '1' ) {
+        printf("Insira a quantidade de viagens. (apenas digitos).\n");
+        int qtd_viagem;
+        scanf("%d", &qtd_viagem);
+        getchar();
+        cliente.qtd_viagem = qtd_viagem;
+    } else {
+        cliente.qtd_viagem = 0;
+    }
 
     return cliente;
 }
@@ -136,6 +169,7 @@ void imprimeCliente( LISTA_CLIENTE *l, int id )
     if ( pos >= 0 ) {
         printf("ID: %d\n", l->cliente[pos].id);
         printf("Nome completo: %s\n", l->cliente[pos].nome_completo);
+        printf("Data de nascimento: %s\n", l->cliente[pos].data_nascimento);
     }
 }
 
@@ -161,7 +195,6 @@ int removeById( LISTA_CLIENTE *l, int id )
 int foundById( LISTA_CLIENTE *l, int id)
 {
     if ( l->pos_livre == 0 ) {
-        printf("Erro - lista de clientes vazia.\n");
         return -1;
     }
     int pos = 0;
@@ -170,7 +203,6 @@ int foundById( LISTA_CLIENTE *l, int id)
         pos++;
 
     if ( pos == l->pos_livre ) {
-        printf("Erro - cliente nao encontrado.\n");
         return -1;
     }
 

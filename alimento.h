@@ -23,6 +23,7 @@ ALIMENTO registraAlimento( LISTA_ALIMENTO *l, int altera ) {
     ALIMENTO alimento;
     int id;
 
+    // Faz a insercao do ID apenas se nao estiver na rotina de alteracao
     if ( altera == 0 ) {
 
         printf("Voce deseja inserir um id? caso nao, sera inserido automaticamente\n");
@@ -35,16 +36,24 @@ ALIMENTO registraAlimento( LISTA_ALIMENTO *l, int altera ) {
 
         // Faz a inserção do id
         if ( entrada == '1' ) {
+
             printf("Insira um ID\n");
             scanf("%d", &id);
             getchar();
+            while ( foundAlimentoById(l, id) >= 0 ) {
+                printf("Um alimento com este ID ja foi cadastrado, insira outro id.\n");
+                scanf("%d", &id);
+                getchar();
+            }
+
         } else {
-            id = buscaUltimoId(l);
+            id = buscaUltimoIdAlimento(l);
             id++;
         }
 
         alimento.id = id;
-
+    }
+    
     // Faz a inserçao do alimento
     printf("Insira o alimento\n");
     gets(nome_alimento);
@@ -52,7 +61,6 @@ ALIMENTO registraAlimento( LISTA_ALIMENTO *l, int altera ) {
     strcpy(alimento.nome_alimento, nome_alimento);
 
     return alimento;
-    }
 }
 
 void insereAlimento ( LISTA_ALIMENTO *l ) {
@@ -60,12 +68,12 @@ void insereAlimento ( LISTA_ALIMENTO *l ) {
 
     a = registraAlimento(l, 0);
 
-    push(l, a);
+    pushAlimento(l, a);
 }
 
 void alteraAlimento( LISTA_ALIMENTO *l ) {
     int id, pos;
-    printf("Insira o ID do alimento que deseja remover (apenas com digitos)\n");
+    printf("Insira o ID do alimento que deseja alterar (apenas com digitos)\n");
     scanf("%d", &id);
     getchar();
 
@@ -78,7 +86,7 @@ void alteraAlimento( LISTA_ALIMENTO *l ) {
     }
 }
 
-void removeAlimetno( LISTA_ALIMENTO *l )
+void removeAlimento( LISTA_ALIMENTO *l )
 {
     if ( l->pos_livre == 0 ) {
         printf("Erro - Nao ha registro de alimentos.\n");
@@ -88,7 +96,7 @@ void removeAlimetno( LISTA_ALIMENTO *l )
     printf("Insira o ID do alimento que deseja remover (apenas com digitos)\n");
     scanf("%d", &id);
     getchar();
-    if ( removeById(l, id) ) {
+    if ( removeAlimentoById(l, id) ) {
         printf("Alimento removido com sucesso.\n");
     } else {
         printf("Erro: alimento nao removido.\n");
@@ -105,8 +113,8 @@ void imprimeAlimentos( LISTA_ALIMENTO *l )
 
     int i;
     for ( i = 0; i < l->pos_livre; i++ ) {
-        printf("ID %d\n", l->alimento[i].id);
-        printf("Alimento %s\n", l->alimento[i].nome_completo);
+        printf("ID: %d\n", l->alimento[i].id);
+        printf("Nome: %s\n", l->alimento[i].nome_alimento);
         printf("\n");
     }
 
@@ -114,7 +122,7 @@ void imprimeAlimentos( LISTA_ALIMENTO *l )
     printf("\n");
 }
 
-void cosultarAlimento( LISTA_ALIMENTO *l)
+void consultarAlimento( LISTA_ALIMENTO *l )
 {
     int id;
     printf("Insira o ID do alimento que deseja remover (apenas com digitos)\n");
@@ -126,7 +134,7 @@ void cosultarAlimento( LISTA_ALIMENTO *l)
 void imprimeAlimento( LISTA_ALIMENTO *l, int id )
 {
     int pos;
-    pos = foundById(l, id);
+    pos = foundAlimentoById(l, id);
 
     if ( pos >= 0 ) {
         printf("ID: %d\n", l->alimento[pos].id);
@@ -134,14 +142,14 @@ void imprimeAlimento( LISTA_ALIMENTO *l, int id )
     }
 }
 
-int removeById( LISTA_ALIMENTO *l, int id )
+int removeAlimentoById( LISTA_ALIMENTO *l, int id )
 {
     if ( l->pos_livre == 0 ) {
         return 0;
     }
 
     int pos, i;
-    pos = foundById(l, id);
+    pos = foundAlimentoById(l, id);
     if ( pos >= 0 ) {
 
         // Percorre a lista de alimentos
@@ -153,10 +161,9 @@ int removeById( LISTA_ALIMENTO *l, int id )
     }
 }
 
-int foundById( LISTA_ALIMENTO *l, int id)
+int foundAlimentoById( LISTA_ALIMENTO *l, int id)
 {
     if ( l->pos_livre == 0 ) {
-        printf("Erro - lista de alimentos vazia.\n");
         return -1;
     }
     int pos = 0;
@@ -165,14 +172,13 @@ int foundById( LISTA_ALIMENTO *l, int id)
         pos++;
 
     if ( pos == l->pos_livre ) {
-        printf("Erro - alimento nao encontrado.\n");
         return -1;
     }
 
     return pos;
 }
 
-int buscaUltimoId( LISTA_ALIMENTO *l )
+int buscaUltimoIdAlimento( LISTA_ALIMENTO *l )
 {
     if ( l->pos_livre == 0 ) {
         return 0;
@@ -187,7 +193,7 @@ int buscaUltimoId( LISTA_ALIMENTO *l )
     return id;
 }
 
-int push( LISTA_ALIMENTO *l, ALIMENTO a )
+int pushAlimento( LISTA_ALIMENTO *l, ALIMENTO a )
 {
     // Lista cheia
     if ( l->pos_livre >= MAX_ALIMENTO_LISTA ) {
