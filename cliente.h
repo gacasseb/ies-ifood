@@ -5,6 +5,8 @@ typedef struct {
     char *nome_completo;
     char *data_nascimento;
     int qtd_viagem;
+    int historico[50];
+    int historico_atual[50];
 } CLIENTE;
 
 typedef struct {
@@ -25,6 +27,8 @@ CLIENTE registraCliente( LISTA_CLIENTE *l, int altera )
     char nome[255];
     char data_nascimento[255];
     char viagens[15];
+    char historico[255];
+    char historico_atual[255];
     char entrada;
 
     CLIENTE cliente;
@@ -86,6 +90,30 @@ CLIENTE registraCliente( LISTA_CLIENTE *l, int altera )
         cliente.qtd_viagem = qtd_viagem;
     } else {
         cliente.qtd_viagem = 0;
+    }
+
+    // Faz a inserção da quantidade de viagens
+    printf("Voce deseja inserir a o historico de pedidos?\n");
+    printf("0 - Nao\n");
+    printf("1 - Sim\n");
+    scanf("%c", &entrada);
+    getchar();
+
+    if ( entrada == '1' ) {
+        int i = 0;
+        int aux = 1;
+
+        while ( aux != 0 ) {
+            printf("Insira o ID do alimento a ser inserido no historico. (apenas digitos)\n");
+            printf("Digite 0 para prosseguir com o cadastro.\n");
+            scanf("%d", &aux);
+            getchar();
+            cliente.historico[i] = aux;
+            if ( altera == 0 ) {
+                cliente.historico_atual[i] = aux;
+            }
+            i++;
+        }
     }
 
     return cliente;
@@ -170,6 +198,23 @@ void imprimeCliente( LISTA_CLIENTE *l, int id )
         printf("ID: %d\n", l->cliente[pos].id);
         printf("Nome completo: %s\n", l->cliente[pos].nome_completo);
         printf("Data de nascimento: %s\n", l->cliente[pos].data_nascimento);
+        if ( l->cliente[pos].qtd_viagem > 0 ) {
+            printf("Quantidade de viagens: %d\n", l->cliente[pos].qtd_viagem);
+        }
+        int i = 0;
+        printf("Historico do cliente: ");
+        while (l->cliente[pos].historico[i] != 0 ) {
+            printf("%d ", l->cliente[pos].historico[i]);
+            i++;
+        }
+        printf("\n");
+        printf("Historico atual do cliente: ");
+        i = 0;
+        while (l->cliente[pos].historico_atual[i] != 0 ) {
+            printf("%d ", l->cliente[pos].historico_atual[i]);
+            i++;
+        }
+        printf("\n");
     }
 }
 
