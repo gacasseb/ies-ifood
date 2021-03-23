@@ -1,5 +1,3 @@
-#include <stdio.h>
-
 #define MAX_ALIMENTO_LISTA 100
 
 typedef struct {
@@ -115,12 +113,14 @@ void alteraAlimento( LISTA_ALIMENTO *l ) {
     scanf("%d", &id);
     getchar();
 
-    pos = foundById(l, id);
+    pos = foundAlimentoById(l, id);
     
     if ( pos >= 0 ) {
         // Altera o alimento
         l->alimento[pos] = registraAlimento(l, 1);
         l->alimento[pos].id = id;
+    } else {
+        printf("Erro - alimento nao encontrado.\n");
     }
 }
 

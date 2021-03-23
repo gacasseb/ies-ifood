@@ -15,6 +15,11 @@ typedef struct {
     int pos_livre;
 } LISTA_CLIENTE;
 
+/**
+ * Cria uma ponteiro para o tipo de estrutura LISTA_CLIENTE
+ * 
+ * @return LISTA_CLIENTE *
+ **/
 LISTA_CLIENTE * criaListaCliente()
 {
     LISTA_CLIENTE * nova_lista = (LISTA_CLIENTE*) malloc(sizeof(LISTA_CLIENTE));
@@ -136,6 +141,12 @@ CLIENTE registraCliente( LISTA_CLIENTE *l, int altera )
     return cliente;
 }
 
+/**
+ * Insere um cliente e faz a validacao
+ * 
+ * @param LISTA_CLIENTE *l
+ * @param FILE
+ **/
 void insereCliente( LISTA_CLIENTE *l, FILE * log )
 {
     CLIENTE c;
@@ -156,6 +167,12 @@ void insereCliente( LISTA_CLIENTE *l, FILE * log )
     }
 }
 
+/**
+ * Registra o ID pelo usuario e altera o cliente
+ * 
+ * @param LISTA_CLIENTE *l
+ * @param FILE
+ **/
 void alteraCliente( LISTA_CLIENTE *l )
 {
     int id, pos;
@@ -172,6 +189,11 @@ void alteraCliente( LISTA_CLIENTE *l )
     }
 }
 
+/**
+ * Remove um cliente
+ * 
+ * @param LISTA_CLIENTE ponteiro para a lista de clientes
+ **/
 void removeCliente( LISTA_CLIENTE *l )
 {
     if ( l->pos_livre == 0 ) {
@@ -189,6 +211,11 @@ void removeCliente( LISTA_CLIENTE *l )
     }
 }
 
+/**
+ * Faz a impressao das informacoes basicas de todos os clientes na tela
+ * 
+ * @param LISTA_CLIENTE ponteiro para a lista de clientes
+ **/
 void imprimeClientes( LISTA_CLIENTE *l )
 {
     if ( l->pos_livre == 0 ) {
@@ -208,6 +235,11 @@ void imprimeClientes( LISTA_CLIENTE *l )
     printf("\n");
 }
 
+/**
+ * Faz o registro pelo teclado do usuario para a impressao de um cliente
+ * 
+ * @param LISTA_CLIENTE ponteiro para a lista de clientes
+ **/
 void consultarCliente( LISTA_CLIENTE *l)
 {
     int id;
@@ -217,6 +249,12 @@ void consultarCliente( LISTA_CLIENTE *l)
     imprimeCliente(l, id);
 }
 
+/**
+ * Faz a impressao de todas informacoes de um determinado cliente, busca o cliente pelo id
+ * 
+ * @param LISTA_CLIENTE ponteiro para a lista de clientes
+ * @param id inteiro que referencia o id do cliente que sera impresso
+ **/
 void imprimeCliente( LISTA_CLIENTE *l, int id )
 {
     int pos;
@@ -248,6 +286,14 @@ void imprimeCliente( LISTA_CLIENTE *l, int id )
     }
 }
 
+/**
+ * Remove um cliente dado o id do cliente
+ * 
+ * @param LISTA_CLIENTE ponteiro para a lista de clientes
+ * @param id inteiro que refenrecia o id do cliente que sera removido
+ * 
+ * @return integer retorna 1 caso o cliente for removido com sucesso da lista
+ **/
 int removeById( LISTA_CLIENTE *l, int id )
 {
     if ( l->pos_livre == 0 ) {
@@ -269,6 +315,14 @@ int removeById( LISTA_CLIENTE *l, int id )
     return -1;
 }
 
+/**
+ * Busca um cliente pelo id na lista de clientes
+ * 
+ * @param LISTA_CLIENTE ponteiro para a lista de clientes
+ * @param id inteiro que referencia o id do usuario a ser procurado na lista
+ * 
+ * @return Retorna a posicao do cliente na lista de clientes
+ **/
 int foundById( LISTA_CLIENTE *l, int id)
 {
     if ( l->pos_livre == 0 ) {
@@ -286,6 +340,13 @@ int foundById( LISTA_CLIENTE *l, int id)
     return pos;
 }
 
+/**
+ * Busca o id de maior numero na lista de clientes
+ * 
+ * @param LISTA_CLIENTE ponteiro para a lista de clientes
+ * 
+ * @return integer id buscado
+ **/
 int buscaUltimoId( LISTA_CLIENTE *l )
 {
     if ( l->pos_livre == 0 ) {
@@ -301,6 +362,14 @@ int buscaUltimoId( LISTA_CLIENTE *l )
     return id;
 }
 
+/**
+ * Insere um cliente no final da lista de clientes
+ * 
+ * @param LISTA_CLIENTE ponteiro para a lista de clientes
+ * @param CLIENTE variavel do tipo cliente para ser inserida
+ * 
+ * @return Retorna 1 se foi inserido com sucesso
+ **/
 int push( LISTA_CLIENTE *l, CLIENTE c )
 {
     // Lista cheia
@@ -316,6 +385,13 @@ int push( LISTA_CLIENTE *l, CLIENTE c )
     }
 }
 
+/**
+ * Faz a validacao de um cliente
+ * 
+ * @param CLIENTE variavel do tipo estrutura CLIENTE
+ * 
+ * @return Retorna o valor do erro
+ **/
 int validaCliente( CLIENTE c ) {
     int erro1 = 0;
     int erro2 = 0;
@@ -336,6 +412,13 @@ int validaCliente( CLIENTE c ) {
     return (erro1 + erro2);
 }
 
+/**
+ * Faz a validacao do id do cliente
+ * 
+ * @param CLIENTE variavel do tipo estrutura CLIENTE
+ * 
+ * @return Retorna 1 caso for valido
+ **/
 int validaId ( CLIENTE c ) {
     if ( c.id < 0 ) {
         return 0;
@@ -343,6 +426,13 @@ int validaId ( CLIENTE c ) {
     return 1;
 }
 
+/**
+ * Faz a validacao da quantidade de viagens do cliente
+ * 
+ * @param CLIENTE variavel do tipo estrutura CLIENTE
+ * 
+ * @return Retorna 1 caso for valido
+ **/
 int validaViagem ( CLIENTE c ) {
     if ( c.qtd_viagem < 0 ) {
         return 0;
@@ -350,6 +440,13 @@ int validaViagem ( CLIENTE c ) {
     return 1;
 }
 
+/**
+ * Faz a validacao da data inserida no cadastro do cliete
+ * 
+ * @param CLIENTE variavel do tipo estrutura CLIENTE
+ * 
+ * @return Retorna 1 caso for valido
+ **/
 int validaData ( CLIENTE c ) {
     if ( c.dia > 31 || c.dia < 0) {
         return 0;
@@ -363,6 +460,13 @@ int validaData ( CLIENTE c ) {
     return 1;
 }
 
+/**
+ * Faz a validacao do nome do cliente
+ * 
+ * @param CLIENTE variavel do tipo estrutura CLIENTE
+ * 
+ * @return Retorna 1 caso for valido
+ **/
 int validaNome ( CLIENTE c ) {
     if ( strcmp(c.nome_completo, "") == 0 ) {
         return 0;
@@ -370,6 +474,13 @@ int validaNome ( CLIENTE c ) {
     return 1;
 }
 
+/**
+ * Faz o registro de erros dentro do arquivo de LOG
+ * 
+ * @param id ID que sera referenciado no registro do erro
+ * @param error valor do erro que sera registrado
+ * @param FILE ponteiro para a variavel que armazena o arquivo de log
+ **/
 void logErrorCliente( int id, int error, FILE * log ) {
     log = fopen("erros.txt", "a");
 
