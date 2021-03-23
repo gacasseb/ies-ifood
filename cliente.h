@@ -171,7 +171,6 @@ void insereCliente( LISTA_CLIENTE *l, FILE * log )
  * Registra o ID pelo usuario e altera o cliente
  * 
  * @param LISTA_CLIENTE *l
- * @param FILE
  **/
 void alteraCliente( LISTA_CLIENTE *l )
 {

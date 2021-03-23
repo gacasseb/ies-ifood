@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #define MAX_ALIMENTO_LISTA 100
 
 typedef struct {
@@ -14,6 +16,11 @@ typedef struct {
     int pos_livre;
 } LISTA_ALIMENTO;
 
+/**
+ * Cria uma ponteiro para o tipo de estrutura LISTA_ALIMENTO
+ * 
+ * @return LISTA_ALIMENTO *
+ **/
 LISTA_ALIMENTO * criaListaAlimento() {
     LISTA_ALIMENTO * nova_lista = (LISTA_ALIMENTO*) malloc(sizeof(LISTA_ALIMENTO));
     nova_lista->pos_livre = 0;
@@ -21,6 +28,14 @@ LISTA_ALIMENTO * criaListaAlimento() {
     return nova_lista;
 }
 
+/**
+ *  Recebe os dados do teclado do usuario e insere na estrutura ALIMENTO
+ * 
+ * @param LISTA_ALIMENTO ponteiro para lista de alimentos
+ * @param altera indica para a funcao se o registro sera para alterar ou apenas inserir
+ * 
+ * @return ALIMENTO retorna uma variavel do tipo struct ALIMENTO
+ **/
 ALIMENTO registraAlimento( LISTA_ALIMENTO *l, int altera ) {
     char nome_alimento[255];
     char nome_marca[255];
@@ -87,6 +102,12 @@ ALIMENTO registraAlimento( LISTA_ALIMENTO *l, int altera ) {
     return alimento;
 }
 
+/**
+ * Insere um alimento e faz a validacao
+ * 
+ * @param LISTA_ALIMENTO *l
+ * @param FILE
+ **/
 void insereAlimento ( LISTA_ALIMENTO *l, FILE * log) {
     ALIMENTO a;
 
@@ -107,23 +128,31 @@ void insereAlimento ( LISTA_ALIMENTO *l, FILE * log) {
     
 }
 
+/**
+ * Registra o ID pelo usuario e altera o alimento
+ * 
+ * @param LISTA_ALIMENTO *l
+ **/
 void alteraAlimento( LISTA_ALIMENTO *l ) {
     int id, pos;
     printf("Insira o ID do alimento que deseja alterar (apenas com digitos)\n");
     scanf("%d", &id);
     getchar();
 
-    pos = foundAlimentoById(l, id);
+    pos = foundById(l, id);
     
     if ( pos >= 0 ) {
         // Altera o alimento
         l->alimento[pos] = registraAlimento(l, 1);
         l->alimento[pos].id = id;
-    } else {
-        printf("Erro - alimento nao encontrado.\n");
     }
 }
 
+/**
+ * Remove um alimento
+ * 
+ * @param LISTA_ALIMENTO ponteiro para a lista de alimentos
+ **/
 void removeAlimento( LISTA_ALIMENTO *l, LISTA_CLIENTE *lc )
 {
     if ( l->pos_livre == 0 ) {
@@ -163,6 +192,11 @@ void removeAlimento( LISTA_ALIMENTO *l, LISTA_CLIENTE *lc )
     }
 }
 
+/**
+ * Faz a impressao das informacoes basicas de todos os alimentos na tela
+ * 
+ * @param LISTA_ALIMENTO ponteiro para a lista de alimentos
+ **/
 void imprimeAlimentos( LISTA_ALIMENTO *l )
 {
     if ( l->pos_livre == 0 ) {
@@ -182,6 +216,11 @@ void imprimeAlimentos( LISTA_ALIMENTO *l )
     printf("\n");
 }
 
+/**
+ * Faz o registro pelo teclado do usuario para a impressao de um alimento
+ * 
+ * @param LISTA_ALIMENTO ponteiro para a lista de alimentos
+ **/
 void consultarAlimento( LISTA_ALIMENTO *l )
 {
     int id;
@@ -191,6 +230,12 @@ void consultarAlimento( LISTA_ALIMENTO *l )
     imprimeAlimento(l, id);
 }
 
+/**
+ * Faz a impressao de todas informacoes de um determinado alimento, busca o alimento pelo id
+ * 
+ * @param LISTA_ALIMENTO ponteiro para a lista de clientes
+ * @param id inteiro que referencia o id do alimento que sera impresso
+ **/
 void imprimeAlimento( LISTA_ALIMENTO *l, int id )
 {
     int pos;
@@ -207,6 +252,14 @@ void imprimeAlimento( LISTA_ALIMENTO *l, int id )
     }
 }
 
+/**
+ * Remove um cliente dado o id do cliente
+ * 
+ * @param LISTA_ALIMENTO ponteiro para a lista de clientes
+ * @param id inteiro que refenrecia o id do cliente que sera removido
+ * 
+ * @return integer retorna 1 caso o cliente for removido com sucesso da lista
+ **/
 int removeAlimentoById( LISTA_ALIMENTO *l, int id )
 {
     if ( l->pos_livre == 0 ) {
@@ -228,6 +281,14 @@ int removeAlimentoById( LISTA_ALIMENTO *l, int id )
     }
 }
 
+/**
+ * Busca um alimento pelo id na lista de alimentos
+ * 
+ * @param LISTA_ALIMENTO ponteiro para a lista de alimentos
+ * @param id inteiro que referencia o id do usuario a ser procurado na lista
+ * 
+ * @return Retorna a posicao do alimento na lista de alimentos
+ **/
 int foundAlimentoById( LISTA_ALIMENTO *l, int id)
 {
     if ( l->pos_livre == 0 ) {
@@ -245,6 +306,13 @@ int foundAlimentoById( LISTA_ALIMENTO *l, int id)
     return pos;
 }
 
+/**
+ * Busca o id de maior numero na lista de alimentos
+ * 
+ * @param LISTA_ALIMENTO ponteiro para a lista de alimentos
+ * 
+ * @return integer id buscado
+ **/
 int buscaUltimoIdAlimento( LISTA_ALIMENTO *l )
 {
     if ( l->pos_livre == 0 ) {
@@ -260,6 +328,14 @@ int buscaUltimoIdAlimento( LISTA_ALIMENTO *l )
     return id;
 }
 
+/**
+ * Insere um alimento no final da lista de alimentos
+ * 
+ * @param LISTA_ALIMENTO ponteiro para a lista de alimentos
+ * @param ALIMENTO variavel do tipo alimento para ser inserido
+ * 
+ * @return Retorna 1 se foi inserido com sucesso
+ **/
 int pushAlimento( LISTA_ALIMENTO *l, ALIMENTO a )
 {
     // Lista cheia
@@ -275,6 +351,13 @@ int pushAlimento( LISTA_ALIMENTO *l, ALIMENTO a )
     }
 }
 
+/**
+ * Faz a validacao de um alimento
+ * 
+ * @param ALIMENTO variavel do tipo estrutura ALIMENTO
+ * 
+ * @return Retorna o valor do erro
+ **/
 int validaAlimento( ALIMENTO a ) {
     int erro1 = 0;
     int erro2 = 0;
@@ -295,6 +378,13 @@ int validaAlimento( ALIMENTO a ) {
     return (erro1 + erro2);
 }
 
+/**
+ * Faz a validacao do id do alimento
+ * 
+ * @param ALIMENTO variavel do tipo estrutura ALIMENTO
+ * 
+ * @return Retorna 1 caso for valido
+ **/
 int validaIdAlimento ( ALIMENTO a ) {
     if ( a.id < 0 ) {
         return 0;
@@ -302,6 +392,13 @@ int validaIdAlimento ( ALIMENTO a ) {
     return 1;
 }
 
+/**
+ * Faz a validacao do valor calorico
+ * 
+ * @param ALIMENTO variavel do tipo estrutura ALIMENTO
+ * 
+ * @return Retorna 1 caso for valido
+ **/
 int validaCalAlimento ( ALIMENTO a ) {
     if ( a.cal < 0 ) {
         return 0;
@@ -309,6 +406,13 @@ int validaCalAlimento ( ALIMENTO a ) {
     return 1;
 }
 
+/**
+ * Faz a validacao do preco
+ * 
+ * @param ALIMENTO variavel do tipo estrutura ALIMENTO
+ * 
+ * @return Retorna 1 caso for valido
+ **/
 int validaPrecoAlimento ( ALIMENTO a ) {
     if ( a.preco < 0 ) {
         return 0;
@@ -316,6 +420,13 @@ int validaPrecoAlimento ( ALIMENTO a ) {
     return 1;
 }
 
+/**
+ * Faz a validacao do nome do alimento
+ * 
+ * @param ALIMENTO variavel do tipo estrutura ALIMENTO
+ * 
+ * @return Retorna 1 caso for valido
+ **/
 int validaNomeAlimento ( ALIMENTO a ) {
     if ( strcmp(a.nome_alimento, "") == 0) {
         return 0;
@@ -323,13 +434,13 @@ int validaNomeAlimento ( ALIMENTO a ) {
     return 1;
 }
 
-int validaMarcaAlimento ( ALIMENTO a ) {
-    if ( strcmp(a.marca, "\0") != 0 ) {
-        return 0;
-    }
-    return 1;
-}
-
+/**
+ * Faz o registro de erros dentro do arquivo de LOG
+ * 
+ * @param id ID que sera referenciado no registro do erro
+ * @param error valor do erro que sera registrado
+ * @param FILE ponteiro para a variavel que armazena o arquivo de log
+ **/
 void logErrorAlimento( int id, int error, FILE * log ) {
     log = fopen("erros.txt", "a");
 
