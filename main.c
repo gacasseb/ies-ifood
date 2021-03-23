@@ -26,6 +26,7 @@ void cliente( LISTA_CLIENTE *l, FILE * log )
         getchar();
 
         if ( entrada == '1' ) {
+            imprimeClientes(l);
             consultarCliente(l);
         }
 
@@ -66,6 +67,7 @@ void alimento( LISTA_ALIMENTO *l, FILE * log, LISTA_CLIENTE *lc)
         getchar();
 
         if ( entrada == '1' ) {
+            imprimeAlimentos(l);
             consultarAlimento(l);
         }
 

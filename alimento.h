@@ -199,6 +199,11 @@ void imprimeAlimento( LISTA_ALIMENTO *l, int id )
     if ( pos >= 0 ) {
         printf("ID: %d\n", l->alimento[pos].id);
         printf("Alimento: %s\n", l->alimento[pos].nome_alimento);
+        printf("Valor calorico: %.2f\n", l->alimento[pos].cal);
+        printf("Preco: %.2f\n", l->alimento[pos].preco);
+        printf("Marca: %s\n", l->alimento[pos].marca);
+    } else {
+        printf("Erro - Alimento nao encontrado.\n");
     }
 }
 
@@ -218,6 +223,8 @@ int removeAlimentoById( LISTA_ALIMENTO *l, int id )
         }
         l->pos_livre--;
         return 1;
+    } else {
+        printf("Erro - Alimento nao encontrado.\n");
     }
 }
 

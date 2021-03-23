@@ -1,4 +1,5 @@
-#define MAX_CLIENTE_LISTA 100
+#define MAX_CLIENTE_LISTA 50
+#define MAX_HISTORICO_LISTA 50
 
 typedef struct {
     int id;
@@ -22,6 +23,14 @@ LISTA_CLIENTE * criaListaCliente()
     return nova_lista;
 }
 
+/**
+ *  Recebe os dados do teclado do usuario e insere na estrutura CLIENTE
+ * 
+ * @param LISTA_CLIENTE ponteiro para lista de clientes
+ * @param altera indica para a funcao se o registro sera para alterar ou apenas inserir
+ * 
+ * @return CLIENTE retorna uma variavel do tipo struct CLIENTE
+ **/
 CLIENTE registraCliente( LISTA_CLIENTE *l, int altera )
 {
     char nome[255];
@@ -115,6 +124,12 @@ CLIENTE registraCliente( LISTA_CLIENTE *l, int altera )
                 cliente.historico_atual[i] = aux;
             }
             i++;
+        }
+    } else if ( entrada == '0' ) {
+        int x;
+        for ( x = 0; x < 50; x++ ) {
+            cliente.historico[x] = 0;
+            cliente.historico_atual[x] = 0;
         }
     }
 
@@ -228,6 +243,8 @@ void imprimeCliente( LISTA_CLIENTE *l, int id )
             i++;
         }
         printf("\n");
+    } else {
+        printf("Erro - Cliente nao encontrado.\n");
     }
 }
 
@@ -248,6 +265,8 @@ int removeById( LISTA_CLIENTE *l, int id )
         l->pos_livre--;
         return 1;
     }
+
+    return -1;
 }
 
 int foundById( LISTA_CLIENTE *l, int id)
