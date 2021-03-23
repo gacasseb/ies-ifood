@@ -124,7 +124,7 @@ void alteraAlimento( LISTA_ALIMENTO *l ) {
     }
 }
 
-void removeAlimento( LISTA_ALIMENTO *l )
+void removeAlimento( LISTA_ALIMENTO *l, LISTA_CLIENTE *lc )
 {
     if ( l->pos_livre == 0 ) {
         printf("Erro - Nao ha registro de alimentos.\n");
@@ -135,6 +135,28 @@ void removeAlimento( LISTA_ALIMENTO *l )
     scanf("%d", &id);
     getchar();
     if ( removeAlimentoById(l, id) ) {
+        // Percorre todos os clientes
+        int i;
+        for ( i = 0; i < lc->pos_livre ; i++ ) {
+            int aux[50], pos = -1, j = 0;
+            // Procura se o historico do cliente contem o id do alimento removido
+            while( lc->cliente[i].historico_atual[j] != 0 ) {
+                if ( lc->cliente[i].historico_atual[j] == id ) {
+                    pos = j;
+                    break;
+                }
+                j++;
+            }
+            // Encontrou um ID
+            if ( pos >= 0 ) {
+                int k = pos;
+                while ( lc->cliente[i].historico_atual[k] != 0 ) {
+                    lc->cliente[i].historico_atual[k] = lc->cliente[i].historico_atual[k+1];
+                    k++;
+                }
+            }
+
+        }
         printf("Alimento removido com sucesso.\n");
     } else {
         printf("Erro: alimento nao removido.\n");
@@ -163,7 +185,7 @@ void imprimeAlimentos( LISTA_ALIMENTO *l )
 void consultarAlimento( LISTA_ALIMENTO *l )
 {
     int id;
-    printf("Insira o ID do alimento que deseja remover (apenas com digitos)\n");
+    printf("Insira o ID do alimento que deseja consultar (apenas com digitos)\n");
     scanf("%d", &id);
     getchar();
     imprimeAlimento(l, id);

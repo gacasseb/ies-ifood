@@ -15,6 +15,7 @@ void cliente( LISTA_CLIENTE *l, FILE * log )
 
         // Imprime o menu
         printf("0 - Voltar\n");
+
         printf("1 - Consultar um cliente\n");
         printf("2 - Inserir um cliente\n");
         printf("3 - Alterar um cliente\n");
@@ -45,12 +46,12 @@ void cliente( LISTA_CLIENTE *l, FILE * log )
     }
 }
 
-void alimento( LISTA_ALIMENTO *l, FILE * log)
+void alimento( LISTA_ALIMENTO *l, FILE * log, LISTA_CLIENTE *lc)
 {
     char entrada = 'a';
 
     while ( entrada != '0' ) {
-        
+
         printf("---------------------------------------- ALIMENTO ----------------------------------------\n\n");
 
         // Imprime o menu
@@ -79,9 +80,9 @@ void alimento( LISTA_ALIMENTO *l, FILE * log)
         }
 
         if ( entrada == '4' ) {
-            removeAlimento(l);
+            removeAlimento(l, lc);
             imprimeAlimentos(l);
-        }        
+        }
     }
 }
 
@@ -92,7 +93,7 @@ int main()
     LISTA_ALIMENTO *la = NULL;
     la = criaListaAlimento();
     l = criaListaCliente();
-    
+
     FILE * log;
     log = fopen("erros.txt", "w");
     fclose(log);
@@ -113,7 +114,7 @@ int main()
             cliente(l, log);
         }
         if ( entrada == '2' ) {
-            alimento(la, log);
+            alimento(la, log, l);
         }
     }
 
