@@ -3,7 +3,7 @@
 typedef struct {
     int id;
     char *nome_completo;
-    char *data_nascimento;
+    int dia, mes, ano;
     int qtd_viagem;
 } CLIENTE;
 
@@ -23,7 +23,7 @@ LISTA_CLIENTE * criaListaCliente()
 CLIENTE registraCliente( LISTA_CLIENTE *l, int altera )
 {
     char nome[255];
-    char data_nascimento[255];
+    int d, m, a;
     char viagens[15];
     char entrada;
 
@@ -67,9 +67,11 @@ CLIENTE registraCliente( LISTA_CLIENTE *l, int altera )
 
     // Faz a inserção data de nascimento
     printf("Insira sua data de nascimento (dd/mm/aaaa)\n");
-    gets(data_nascimento);
-    cliente.data_nascimento = (char*) malloc(sizeof(data_nascimento));
-    strcpy(cliente.data_nascimento, data_nascimento);
+    scanf("%d/%d/%d", &d, &m, &a);
+    getchar();
+    cliente.dia = d;
+    cliente.mes = m;
+    cliente.ano = a;
 
     // Faz a inserção da quantidade de viagens
     printf("Voce deseja inserir a quantidade de viagens?\n");
@@ -91,13 +93,24 @@ CLIENTE registraCliente( LISTA_CLIENTE *l, int altera )
     return cliente;
 }
 
-void insereCliente( LISTA_CLIENTE *l )
+void insereCliente( LISTA_CLIENTE *l, FILE * log )
 {
     CLIENTE c;
 
     c = registraCliente(l, 0);
 
-    push(l, c);
+    if ( validaCliente(c) == 0 ) {
+        push(l, c);
+    }
+    if ( validaCliente(c) == -1 ) {
+        logErrorCliente(c.id, -1, log);
+    }
+    if ( validaCliente(c) == -2 ) {
+        logErrorCliente(c.id, -2, log);
+    }
+    if ( validaCliente(c) == -3 ) {
+        logErrorCliente(c.id, -3, log);
+    }
 }
 
 void alteraCliente( LISTA_CLIENTE *l )
@@ -169,7 +182,7 @@ void imprimeCliente( LISTA_CLIENTE *l, int id )
     if ( pos >= 0 ) {
         printf("ID: %d\n", l->cliente[pos].id);
         printf("Nome completo: %s\n", l->cliente[pos].nome_completo);
-        printf("Data de nascimento: %s\n", l->cliente[pos].data_nascimento);
+        printf("Data de nascimento: %d/%d/%d\n", l->cliente[pos].dia, l->cliente[pos].mes, l->cliente[pos].ano);
     }
 }
 
@@ -237,4 +250,75 @@ int push( LISTA_CLIENTE *l, CLIENTE c )
 
         return 1;
     }
+}
+
+int validaCliente( CLIENTE c ) {
+    int erro1 = 0;
+    int erro2 = 0;
+
+    if ( !validaId(c) ) {
+        erro2 = -2;
+    }
+    if ( !validaViagem(c) ) {
+        erro2 = -2;
+    }
+    if ( !validaData(c) ) {
+        erro2 = -2;
+    }
+    if ( !validaNome(c) ) {
+        erro1 = -1;
+    }
+
+    return (erro1 + erro2);
+}
+
+int validaId ( CLIENTE c ) {
+    if ( c.id < 0 ) {
+        return 0;
+    }
+    return 1;
+}
+
+int validaViagem ( CLIENTE c ) {
+    if ( c.qtd_viagem < 0 ) {
+        return 0;
+    }
+    return 1;
+}
+
+int validaData ( CLIENTE c ) {
+    if ( c.dia > 31 || c.dia < 0) {
+        return 0;
+    }
+    if ( c.mes > 12 || c.mes < 0) {
+        return 0;
+    }
+    if ( c.ano < 1900 || c.ano > 2021) {
+        return 0;
+    }
+    return 1;
+}
+
+int validaNome ( CLIENTE c ) {
+    if ( strcmp(c.nome_completo, "") == 0 ) {
+        return 0;
+    }
+    return 1;
+}
+
+void logErrorCliente( int id, int error, FILE * log ) {
+    log = fopen("erros.txt", "a");
+
+    fprintf(log, "Cliente do ID:%d nao registrado:\n", id);
+    if ( error == -1 ) {
+        fprintf(log, "Regra 1 desrespeitada\n");
+    }
+    if ( error == -2 ) {
+        fprintf(log, "Regra 2 desrespeitada\n");
+    }
+    if ( error == -3 ) {
+        fprintf(log, "Regras 1 e 2 desrespeitadas\n");
+    }
+    fprintf(log, "\n");
+    fclose(log);
 }

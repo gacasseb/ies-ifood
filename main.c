@@ -5,7 +5,7 @@
 #include "cliente.h"
 #include "alimento.h"
 
-void cliente( LISTA_CLIENTE *l )
+void cliente( LISTA_CLIENTE *l, FILE * log )
 {
     char entrada = 'a';
 
@@ -29,7 +29,7 @@ void cliente( LISTA_CLIENTE *l )
         }
 
         if ( entrada == '2' ) {
-            insereCliente(l);
+            insereCliente(l, log);
             imprimeClientes(l);
         }
 
@@ -110,7 +110,7 @@ int main()
         getchar();
 
         if ( entrada == '1' ) {
-            cliente(l);
+            cliente(l, log);
         }
         if ( entrada == '2' ) {
             alimento(la, log);
