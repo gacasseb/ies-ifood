@@ -131,7 +131,7 @@ void insereCliente( LISTA_CLIENTE *l )
 void alteraCliente( LISTA_CLIENTE *l )
 {
     int id, pos;
-    printf("Insira o ID do cliente que deseja remover (apenas com digitos)\n");
+    printf("Insira o ID do cliente que deseja alterar (apenas com digitos)\n");
     scanf("%d", &id);
     getchar();
 
@@ -183,7 +183,7 @@ void imprimeClientes( LISTA_CLIENTE *l )
 void consultarCliente( LISTA_CLIENTE *l)
 {
     int id;
-    printf("Insira o ID do cliente que deseja remover (apenas com digitos)\n");
+    printf("Insira o ID do cliente que deseja consultar (apenas com digitos)\n");
     scanf("%d", &id);
     getchar();
     imprimeCliente(l, id);
