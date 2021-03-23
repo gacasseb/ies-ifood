@@ -1,8 +1,14 @@
+#include <stdio.h>
+
 #define MAX_ALIMENTO_LISTA 100
 
 typedef struct {
     int id;
+    float cal;
+    float preco;
+    char *marca;
     char *nome_alimento;
+
 } ALIMENTO;
 
 typedef struct {
@@ -19,9 +25,11 @@ LISTA_ALIMENTO * criaListaAlimento() {
 
 ALIMENTO registraAlimento( LISTA_ALIMENTO *l, int altera ) {
     char nome_alimento[255];
+    char nome_marca[255];
 
     ALIMENTO alimento;
     int id;
+    float vcal, preco;
 
     // Faz a insercao do ID apenas se nao estiver na rotina de alteracao
     if ( altera == 0 ) {
@@ -60,15 +68,45 @@ ALIMENTO registraAlimento( LISTA_ALIMENTO *l, int altera ) {
     alimento.nome_alimento = (char*) malloc(sizeof(nome_alimento));
     strcpy(alimento.nome_alimento, nome_alimento);
 
+    // Faz a inserçao do valor calorico
+    printf("Insira o valor calorico\n");
+    scanf("%f", &vcal);
+    getchar();
+    alimento.cal = vcal;
+
+    // Faz a inserçao do preco
+    printf("Insira o preco\n");
+    scanf("%f", &preco);
+    getchar();
+    alimento.preco = preco;
+
+    // Faz a inserçao da marca
+    printf("Insira a marca\n");
+    gets(nome_marca);
+    alimento.marca = (char*) malloc(sizeof(nome_marca));
+    strcpy(alimento.marca, nome_marca);
+
     return alimento;
 }
 
-void insereAlimento ( LISTA_ALIMENTO *l ) {
+void insereAlimento ( LISTA_ALIMENTO *l, FILE * log) {
     ALIMENTO a;
 
     a = registraAlimento(l, 0);
-
-    pushAlimento(l, a);
+    
+    if ( validaAlimento(a) == 0 ) {
+        pushAlimento(l, a);
+    }
+    if ( validaAlimento(a) == -1 ) {
+        logErrorAlimento(a.id, -1, log);
+    }
+    if ( validaAlimento(a) == -2 ) {
+        logErrorAlimento(a.id, -2, log);
+    }
+    if ( validaAlimento(a) == -3 ) {
+        logErrorAlimento(a.id, -3, log);
+    }
+    
 }
 
 void alteraAlimento( LISTA_ALIMENTO *l ) {
@@ -206,4 +244,75 @@ int pushAlimento( LISTA_ALIMENTO *l, ALIMENTO a )
 
         return 1;
     }
+}
+
+int validaAlimento( ALIMENTO a ) {
+    int erro1 = 0;
+    int erro2 = 0;
+
+    if ( !validaIdAlimento(a) ) {
+        erro2 = -2;
+    }
+    if ( !validaCalAlimento(a) ) {
+        erro2 = -2;
+    }
+    if ( !validaPrecoAlimento(a) ) {
+        erro2 = -2;
+    }
+    if ( !validaNomeAlimento(a) ) {
+        erro1 = -1;
+    }
+
+    return (erro1 + erro2);
+}
+
+int validaIdAlimento ( ALIMENTO a ) {
+    if ( a.id < 0 ) {
+        return 0;
+    }
+    return 1;
+}
+
+int validaCalAlimento ( ALIMENTO a ) {
+    if ( a.cal < 0 ) {
+        return 0;
+    }
+    return 1;
+}
+
+int validaPrecoAlimento ( ALIMENTO a ) {
+    if ( a.preco < 0 ) {
+        return 0;
+    }
+    return 1;
+}
+
+int validaNomeAlimento ( ALIMENTO a ) {
+    if ( strcmp(a.nome_alimento, "") == 0) {
+        return 0;
+    }
+    return 1;
+}
+
+int validaMarcaAlimento ( ALIMENTO a ) {
+    if ( strcmp(a.marca, "\0") != 0 ) {
+        return 0;
+    }
+    return 1;
+}
+
+void logErrorAlimento( int id, int error, FILE * log ) {
+    log = fopen("erros.txt", "a");
+
+    fprintf(log, "Alimento do ID:%d nao registrado:\n", id);
+    if ( error == -1 ) {
+        fprintf(log, "Regra 1 desrespeitada\n");
+    }
+    if ( error == -2 ) {
+        fprintf(log, "Regra 2 desrespeitada\n");
+    }
+    if ( error == -3 ) {
+        fprintf(log, "Regras 1 e 2 desrespeitadas\n");
+    }   
+    fclose(log);
 }

@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <string.h>
+
 
 #include "cliente.h"
 #include "alimento.h"
@@ -43,7 +45,7 @@ void cliente( LISTA_CLIENTE *l )
     }
 }
 
-void alimento( LISTA_ALIMENTO *l )
+void alimento( LISTA_ALIMENTO *l, FILE * log)
 {
     char entrada = 'a';
 
@@ -67,7 +69,7 @@ void alimento( LISTA_ALIMENTO *l )
         }
 
         if ( entrada == '2' ) {
-            insereAlimento(l);
+            insereAlimento(l, log);
             imprimeAlimentos(l);
         }
 
@@ -90,6 +92,10 @@ int main()
     LISTA_ALIMENTO *la = NULL;
     la = criaListaAlimento();
     l = criaListaCliente();
+    
+    FILE * log;
+    log = fopen("erros.txt", "w");
+    fclose(log);
 
     while ( entrada != '0' ) {
         printf("---------------------------------------- MENU ----------------------------------------\n\n");
@@ -107,7 +113,7 @@ int main()
             cliente(l);
         }
         if ( entrada == '2' ) {
-            alimento(la);
+            alimento(la, log);
         }
     }
 
