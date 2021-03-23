@@ -313,6 +313,7 @@ void logErrorAlimento( int id, int error, FILE * log ) {
     }
     if ( error == -3 ) {
         fprintf(log, "Regras 1 e 2 desrespeitadas\n");
-    }   
+    }
+    fprintf(log, "\n"); 
     fclose(log);
 }
