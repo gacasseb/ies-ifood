@@ -6,7 +6,9 @@
 #include "alimento.h"
 #include "viagem.h"
 
-void cliente( LISTA_CLIENTE *l, FILE * log )
+#include "cliente.c"
+
+void cliente( LISTA_CLIENTE *l, FILE * log, LISTA_ALIMENTO *la )
 {
     char entrada = 'a';
 
@@ -32,12 +34,12 @@ void cliente( LISTA_CLIENTE *l, FILE * log )
         }
 
         if ( entrada == '2' ) {
-            insereCliente(l, log);
+            insereCliente(l, log, la);
             imprimeClientes(l);
         }
 
         if ( entrada == '3' ) {
-            alteraCliente(l);
+            alteraCliente(l, log, la);
             imprimeClientes(l);
         }
 
@@ -160,7 +162,7 @@ int main()
         getchar();
 
         if ( entrada == '1' ) {
-            cliente(l, log);
+            cliente(l, log, la);
         }
         if ( entrada == '2' ) {
             alimento(la, log, l);
