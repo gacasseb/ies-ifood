@@ -29,12 +29,12 @@ LISTA_VIAGEM * criaListaViagem() {
 }
 
 /**
- *  Recebe os dados do teclado do usuario e insere na estrutura ALIMENTO
+ *  Recebe os dados do teclado do usuario e insere na estrutura VIAGEM
  * 
- * @param LISTA_ALIMENTO ponteiro para lista de alimentos
+ * @param LISTA_VIAGEM ponteiro para lista de viagens
  * @param altera indica para a funcao se o registro sera para alterar ou apenas inserir
  * 
- * @return ALIMENTO retorna uma variavel do tipo struct ALIMENTO
+ * @return VIAGEM retorna uma variavel do tipo struct VIAGEM
  **/
 VIAGEM registraViagem( LISTA_ALIMENTO *l, int altera ) {
     VIAGEM viagem;
@@ -101,9 +101,9 @@ VIAGEM registraViagem( LISTA_ALIMENTO *l, int altera ) {
 }
 
 /**
- * Faz o registro pelo teclado do usuario para a impressao de um alimento
+ * Faz o registro pelo teclado do usuario para a impressao de uma viagem
  * 
- * @param LISTA_ALIMENTO ponteiro para a lista de alimentos
+ * @param LISTA_VIAGEM ponteiro para a lista de viagens
  **/
 void consultarViagem( LISTA_VIAGEM *l )
 {
@@ -115,35 +115,24 @@ void consultarViagem( LISTA_VIAGEM *l )
 }
 
 /**
- * Insere um alimento e faz a validacao
+ * Insere uma viagem
  * 
- * @param LISTA_ALIMENTO *l
+ * @param LISTA_VIAGEM *l
  * @param FILE
  **/
-void insereViagem ( LISTA_VIAGEM *l, FILE * log) {
+void insereViagem ( LISTA_VIAGEM *l) {
     VIAGEM v;
 
     v = registraViagem(l, 0);
 
     pushViagem(l, v);
-    
-    // if ( validaAlimento(v) == 0 ) {
-    //     pushAlimento(l, v);
-    // }
-    // if ( validaAlimento(v) == -1 ) {
-    //     logErrorAlimento(v.id, -1, log);
-    // }
-    // if ( validaAlimento(v) == -2 ) {
-    //     logErrorAlimento(v.id, -2, log);
-    // }
-    // if ( validaAlimento(v) == -3 ) {
-    //     logErrorAlimento(v.id, -3, log);
-    // }
 }
 
 /**
- * @param LISTA_VIAGEM *l
- **/
+* Altera os dados de uma viagem ja registrada
+*
+* @param LISTA_VIAGEM *l
+**/
 void alteraViagem( LISTA_VIAGEM *l ) {
     int id, pos;
     printf("Insira o ID da viagem que deseja alterar (apenas com digitos)\n");
@@ -159,9 +148,9 @@ void alteraViagem( LISTA_VIAGEM *l ) {
 }
 
 /**
-* Registra o id da viagem que será removida da lsita
+* Registra o id da viagem que será removida da lista
 *
-*   @param LISTA_VIAGEM ponteiro para a lista de viagem
+* @param LISTA_VIAGEM ponteiro para a lista de viagem
 **/
 void removeViagem( LISTA_VIAGEM *l )
 {
@@ -302,7 +291,7 @@ int buscaUltimoIdViagem( LISTA_VIAGEM *l )
 /**
  * Busca uma viagem pelo id na lista de viagens
  * 
- * @param LISTA_VIAGEM ponteiro para a lista de alimentos
+ * @param LISTA_VIAGEM ponteiro para a lista de viagens
  * @param id inteiro que referencia o id da viagem a ser procurada na lista
  * 
  * @return integer Retorna a posicao da viagem na lista de viagens (-1 se nao foi encontrado)

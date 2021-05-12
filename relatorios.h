@@ -7,7 +7,7 @@ typedef struct {
 } MARCA;
 
 /**
- * Busca uma viagem pelo id na lista de viagens
+ * Gera um relatorio simples com todas as informaçoes registradas
  * 
  * @param LISTA_CLIENTE ponteiro para lista de clientes
  * @param LISTA_ALIMENTO ponteiro para lista de alimentos
@@ -23,6 +23,7 @@ void geraRelatSimples (LISTA_CLIENTE *lc, LISTA_ALIMENTO *la, LISTA_VIAGEM *lv) 
 
     if ( lc->pos_livre != 0 ) {
 
+        //Imprime todas as informaçoes de todos os clientes
         for ( i = 0; i < lc->pos_livre; i++ ) {
             fprintf(f, "ID %d\n", lc->cliente[i].id);
             fprintf(f, "Nome %s\n", lc->cliente[i].nome_completo);
@@ -35,7 +36,7 @@ void geraRelatSimples (LISTA_CLIENTE *lc, LISTA_ALIMENTO *la, LISTA_VIAGEM *lv) 
             for ( j = 0; lc->cliente[i].historico_atual[j] != 0; j++) {
                 fprintf(f, "%d ", lc->cliente[i].historico_atual[j]);
             }
-            fprintf(f, "\nHistorico de viagens: ");
+            fprintf(f, "\nHistorico completo de viagens: ");
             for ( j = 0; lc->cliente[i].historico_viagem[j] != 0; j++ ) {
                 fprintf(f, "%d ", lc->cliente[i].historico_viagem[j]);
             }
@@ -50,6 +51,8 @@ void geraRelatSimples (LISTA_CLIENTE *lc, LISTA_ALIMENTO *la, LISTA_VIAGEM *lv) 
     fprintf(f, "\n---------------------------------------- ALIMENTOS REGISTRADOS ----------------------------------------\n\n\n");
 
     if ( la->pos_livre != 0 ) {
+
+        //Imprime todas as informaçoes de todos os alimentos
         for ( i = 0; i < la->pos_livre; i++ ) {
             fprintf(f, "ID %d\n", la->alimento[i].id);
             fprintf(f, "Nome: %s\n", la->alimento[i].nome_alimento);
@@ -65,7 +68,10 @@ void geraRelatSimples (LISTA_CLIENTE *lc, LISTA_ALIMENTO *la, LISTA_VIAGEM *lv) 
 
     fprintf(f, "\n----------------------------------------- VIAGENS REGISTRADAS -----------------------------------------\n\n\n");
 
+
     if ( lv->pos_livre != 0 ) {
+
+        //Imprime todas as informaçoes de todas as viagens
         for ( i = 0; i < lv->pos_livre; i++ ) {
             fprintf(f, "ID %d\n", lv->viagem[i].id);
             fprintf(f, "Origem:\n");
@@ -87,7 +93,8 @@ void geraRelatSimples (LISTA_CLIENTE *lc, LISTA_ALIMENTO *la, LISTA_VIAGEM *lv) 
 }
 
 /**
- * Busca uma viagem pelo id na lista de viagens
+ * Gera um relatorio de estatisticas que informa a ocorrencia das marcas 
+ * registradas e o preço medio das viagens realizadas por cada cliente
  * 
  * @param LISTA_CLIENTE ponteiro para lista de clientes
  * @param LISTA_ALIMENTO ponteiro para lista de alimentos
@@ -109,6 +116,7 @@ void geraRelatEstatisticas(LISTA_CLIENTE *lc, LISTA_ALIMENTO *la, LISTA_VIAGEM *
         vetor_marcas[i].contador = 0;
     }
 
+    //Conta as marcas registradas e armazena num vetor MARCA
     for ( i=0; i < la->pos_livre; i++) {
         for ( j=0, aux=0; j < la->pos_livre; j++) {
             if ( (strcmp(la->alimento[i].marca, vetor_marcas[j].marca)) == 0 ) {
@@ -138,6 +146,7 @@ void geraRelatEstatisticas(LISTA_CLIENTE *lc, LISTA_ALIMENTO *la, LISTA_VIAGEM *
     int idv = 1, pos;
     float calc;
 
+    //Calcula o preço medio das viagens
     if ( lv->pos_livre != 0 ) {
         for ( i=0; i < lc->pos_livre; i++ ) {
             fprintf(f, "ID %d: ", lc->cliente[i].id);
@@ -161,7 +170,8 @@ void geraRelatEstatisticas(LISTA_CLIENTE *lc, LISTA_ALIMENTO *la, LISTA_VIAGEM *
 }
 
 /**
- * Busca uma viagem pelo id na lista de viagens
+ * Gera um relatorio com metadados a partir do cadastro, que informa 
+ * as marcas mais ocorridas e os clientes com o maior preço medio de viagem
  * 
  * @param LISTA_CLIENTE ponteiro para lista de clientes
  * @param LISTA_ALIMENTO ponteiro para lista de alimentos
@@ -180,7 +190,8 @@ void geraRelatMetadados( LISTA_CLIENTE *lc, LISTA_ALIMENTO *la, LISTA_VIAGEM *lv
         vetor_marcas[i].contador = 0;
     }
 
-    for ( i=0; i < la->pos_livre; i++) {
+    //Conta as marcas registradas e armazena num vetor MARCA
+    for ( i=0; i < la->pos_livre; i++ ) {
         for ( j=0, aux=0; j < la->pos_livre; j++) {
             if ( (strcmp(la->alimento[i].marca, vetor_marcas[j].marca)) == 0 ) {
                 vetor_marcas[j].contador++;
@@ -207,6 +218,7 @@ void geraRelatMetadados( LISTA_CLIENTE *lc, LISTA_ALIMENTO *la, LISTA_VIAGEM *lv
         }
     }
 
+    //Imprime as marcas com maior numero de ocorrencias
     for ( i=maior; i < k; i++ ) {
         if ( vetor_marcas[maior].contador == vetor_marcas[i].contador ) {
             fprintf(f, "%s\n", vetor_marcas[i].marca);
@@ -247,6 +259,7 @@ void geraRelatMetadados( LISTA_CLIENTE *lc, LISTA_ALIMENTO *la, LISTA_VIAGEM *lv
             idade--;
         }
 
+        //Imprime os clientes com maior numero de ocorrencias
         fprintf(f, "ID %d\n", lc->cliente[maior].id);
         fprintf(f, "%s\n", lc->cliente[maior].nome_completo);
         fprintf(f, "Idade: %d\n", idade);

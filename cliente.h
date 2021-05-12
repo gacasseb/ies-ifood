@@ -5,7 +5,6 @@ typedef struct {
     int id;
     char *nome_completo;
     int dia, mes, ano;
-    int qtd_viagem;
     int historico[50];
     int historico_atual[50];
     int historico_viagem[50];

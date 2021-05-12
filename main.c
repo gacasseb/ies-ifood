@@ -92,7 +92,7 @@ void alimento( LISTA_ALIMENTO *l, FILE * log, LISTA_CLIENTE *lc)
     }
 }
 
-void viagem( LISTA_VIAGEM *l, FILE * log )
+void viagem( LISTA_VIAGEM *l )
 {
     char entrada = 'a';
 
@@ -117,7 +117,7 @@ void viagem( LISTA_VIAGEM *l, FILE * log )
         }
 
         if ( entrada == '2' ) {
-            insereViagem(l, log);
+            insereViagem(l);
             imprimeViagens(l);
         }
 
@@ -202,7 +202,7 @@ int main()
             alimento(la, log, l);
         }
         if ( entrada == '3' ) {
-            viagem(lv, log);
+            viagem(lv);
         }
         if ( entrada == '4' ) {
             relatorios(l, la, lv);

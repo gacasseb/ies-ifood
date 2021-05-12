@@ -77,7 +77,7 @@ CLIENTE registraCliente( LISTA_CLIENTE *l, int altera )
     cliente.mes = m;
     cliente.ano = a;
 
-    // Faz a inserção da quantidade de viagens
+    // Faz a inserção do historico de pedidos
     printf("Voce deseja inserir o historico de pedidos?\n");
     printf("0 - Nao\n");
     printf("1 - Sim\n");
@@ -108,8 +108,8 @@ CLIENTE registraCliente( LISTA_CLIENTE *l, int altera )
         }
     }
 
-    // Faz a inserção da quantidade de viagens
-    printf("Voce deseja inserir a o historico atual de pedidos?\n");
+    // Faz a inserção do historico atual de pedidos
+    printf("Voce deseja inserir o historico atual de pedidos?\n");
     printf("0 - Nao\n");
     printf("1 - Sim\n");
     scanf("%c", &entrada);
@@ -151,8 +151,8 @@ CLIENTE registraCliente( LISTA_CLIENTE *l, int altera )
         }
     }
 
-    // Faz a inserção da quantidade de viagens
-    printf("Voce deseja inserir a o historico de viagens?\n");
+    // Faz a inserção do historico completo de viagens
+    printf("Voce deseja inserir o historico completo de viagens?\n");
     printf("0 - Nao\n");
     printf("1 - Sim\n");
     scanf("%c", &entrada);
@@ -171,7 +171,7 @@ CLIENTE registraCliente( LISTA_CLIENTE *l, int altera )
             i++;
         }
 
-        // Seta como 0 o resto do array de historico atual
+        // Seta como 0 o resto do array de historico de viagens
         for ( ; i < 50; i++ ) {
             cliente.historico_viagem[i] = 0;
         }
@@ -345,7 +345,7 @@ void imprimeCliente( LISTA_CLIENTE *l, int id )
             i++;
         }
         printf("\n");
-        printf("Historico atual de viagens do cliente: ");
+        printf("Historico completo de viagens do cliente: ");
         i = 0;
         while (l->cliente[pos].historico_viagem[i] != 0 ) {
             printf("%d ", l->cliente[pos].historico_viagem[i]);
@@ -470,9 +470,6 @@ int validaCliente( CLIENTE c, LISTA_ALIMENTO *la ) {
     if ( !validaId(c) ) {
         erro2 = -2;
     }
-    if ( !validaViagem(c) ) {
-        erro2 = -2;
-    }
     if ( !validaData(c) ) {
         erro2 = -2;
     }
@@ -495,20 +492,6 @@ int validaCliente( CLIENTE c, LISTA_ALIMENTO *la ) {
  **/
 int validaId ( CLIENTE c ) {
     if ( c.id < 0 ) {
-        return 0;
-    }
-    return 1;
-}
-
-/**
- * Faz a validacao da quantidade de viagens do cliente
- * 
- * @param CLIENTE variavel do tipo estrutura CLIENTE
- * 
- * @return Retorna 1 caso for valido
- **/
-int validaViagem ( CLIENTE c ) {
-    if ( c.qtd_viagem < 0 ) {
         return 0;
     }
     return 1;
