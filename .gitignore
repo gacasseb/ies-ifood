@@ -4,3 +4,6 @@ main.exe
 main.o
 main.S
 erros.txt
+relatorio_simples.txt
+relatorio_estatistica.txt
+relatorio_metadados.txt

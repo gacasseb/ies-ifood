@@ -5,6 +5,7 @@
 #include "cliente.h"
 #include "alimento.h"
 #include "viagem.h"
+#include "relatorios.h"
 
 #include "cliente.c"
 
@@ -125,13 +126,45 @@ void viagem( LISTA_VIAGEM *l, FILE * log )
             alteraViagem(l);
             imprimeViagens(l);
         }
-        
+
         if ( entrada == '4' ) {
             imprimeViagens(l);
             removeViagem(l);
             imprimeViagens(l);
         }
     }
+}
+
+void relatorios( LISTA_CLIENTE * lc, LISTA_ALIMENTO * la, LISTA_VIAGEM * lv ) {
+    char entrada = 'a';
+
+    while ( entrada != '0' ) {
+
+        printf("-------------------------------------- RELATORIOS ----------------------------------------\n\n");
+
+        // Imprime o menu
+        printf("0 - Voltar\n");
+        printf("1 - Gerar relatorio simples\n");
+        printf("2 - Gerar relatorio com estatisticas\n");
+        printf("3 - Gerar relatorio com metadados\n");
+        printf("\n");
+
+        scanf("%c", &entrada);
+        getchar();
+
+        if ( entrada == '1' ) {
+             geraRelatSimples(lc, la, lv);
+        }
+
+        if ( entrada == '2' ) {
+            geraRelatEstatisticas(lc, la, lv);
+        }
+        
+        if ( entrada == '3' ) {
+            geraRelatMetadados(lc, la, lv);
+        }
+    }
+
 }
 
 int main()
@@ -156,6 +189,7 @@ int main()
         printf("1 - Menu de clientes\n");
         printf("2 - Menu de alimentos\n");
         printf("3 - Menu de viagens\n");
+        printf("4 - Menu de relatorios\n");
 
         // Recebe a entrada
         scanf("%c", &entrada);
@@ -170,7 +204,10 @@ int main()
         if ( entrada == '3' ) {
             viagem(lv, log);
         }
+        if ( entrada == '4' ) {
+            relatorios(l, la, lv);
+        }
     }
 
-    return 1;
+    return 0;
 }

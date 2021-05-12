@@ -178,6 +178,12 @@ CLIENTE registraCliente( LISTA_CLIENTE *l, int altera )
             cliente.historico_viagem[i] = aux;
             i++;
         }
+
+        // Seta como 0 o resto do array de historico atual
+        for ( ; i < 50; i++ ) {
+            cliente.historico_viagem[i] = 0;
+        }
+
     } else if ( entrada == '0' ) {
         int x;
         for ( x = 0; x < 50; x++ ) {
