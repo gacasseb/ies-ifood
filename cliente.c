@@ -77,22 +77,22 @@ CLIENTE registraCliente( LISTA_CLIENTE *l, int altera )
     cliente.mes = m;
     cliente.ano = a;
 
-    // Faz a inserção da quantidade de viagens
-    printf("Voce deseja inserir a quantidade de viagens?\n");
-    printf("0 - Nao\n");
-    printf("1 - Sim\n");
-    scanf("%c", &entrada);
-    getchar();
+    // // Faz a inserção da quantidade de viagens
+    // printf("Voce deseja inserir a quantidade de viagens?\n");
+    // printf("0 - Nao\n");
+    // printf("1 - Sim\n");
+    // scanf("%c", &entrada);
+    // getchar();
 
-    if ( entrada == '1' ) {
-        printf("Insira a quantidade de viagens. (apenas digitos).\n");
-        int qtd_viagem;
-        scanf("%d", &qtd_viagem);
-        getchar();
-        cliente.qtd_viagem = qtd_viagem;
-    } else {
-        cliente.qtd_viagem = 0;
-    }
+    // if ( entrada == '1' ) {
+    //     printf("Insira a quantidade de viagens. (apenas digitos).\n");
+    //     int qtd_viagem;
+    //     scanf("%d", &qtd_viagem);
+    //     getchar();
+    //     cliente.qtd_viagem = qtd_viagem;
+    // } else {
+    //     cliente.qtd_viagem = 0;
+    // }
 
     // Faz a inserção da quantidade de viagens
     printf("Voce deseja inserir a o historico de pedidos?\n");
@@ -156,6 +156,32 @@ CLIENTE registraCliente( LISTA_CLIENTE *l, int altera )
         int x;
         for ( x = 0; x < 50; x++ ) {
             cliente.historico_atual[x] = 0;
+        }
+    }
+
+    // Faz a inserção da quantidade de viagens
+    printf("Voce deseja inserir a o historico de viagens?\n");
+    printf("0 - Nao\n");
+    printf("1 - Sim\n");
+    scanf("%c", &entrada);
+    getchar();
+
+    if ( entrada == '1' ) {
+        int i = 0;
+        int aux = 1;
+
+        while ( aux != 0 ) {
+            printf("Insira o ID da viagem a ser inserido no historico. (apenas digitos)\n");
+            printf("Digite 0 para prosseguir com o cadastro.\n");
+            scanf("%d", &aux);
+            getchar();
+            cliente.historico_viagem[i] = aux;
+            i++;
+        }
+    } else if ( entrada == '0' ) {
+        int x;
+        for ( x = 0; x < 50; x++ ) {
+            cliente.historico_viagem[x] = 0;
         }
     }
 
@@ -311,16 +337,23 @@ void imprimeCliente( LISTA_CLIENTE *l, int id )
             printf("Quantidade de viagens: %d\n", l->cliente[pos].qtd_viagem);
         }
         int i = 0;
-        printf("Historico do cliente: ");
+        printf("Historico de pedidos do cliente: ");
         while (l->cliente[pos].historico[i] != 0 ) {
             printf("%d ", l->cliente[pos].historico[i]);
             i++;
         }
         printf("\n");
-        printf("Historico atual do cliente: ");
+        printf("Historico atual de pedidos do cliente: ");
         i = 0;
         while (l->cliente[pos].historico_atual[i] != 0 ) {
             printf("%d ", l->cliente[pos].historico_atual[i]);
+            i++;
+        }
+        printf("\n");
+        printf("Historico atual de viagens do cliente: ");
+        i = 0;
+        while (l->cliente[pos].historico_viagem[i] != 0 ) {
+            printf("%d ", l->cliente[pos].historico_viagem[i]);
             i++;
         }
         printf("\n");

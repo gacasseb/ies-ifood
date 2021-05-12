@@ -8,6 +8,7 @@ typedef struct {
     int qtd_viagem;
     int historico[50];
     int historico_atual[50];
+    int historico_viagem[50];
 } CLIENTE;
 
 typedef struct {
