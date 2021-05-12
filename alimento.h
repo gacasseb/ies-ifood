@@ -396,33 +396,6 @@ int pushAlimento( LISTA_ALIMENTO *l, ALIMENTO a )
 }
 
 /**
- * Faz a validacao de um alimento
- *
- * @param ALIMENTO variavel do tipo estrutura ALIMENTO
- *
- * @return Retorna o valor do erro
- **/
-int validaAlimento( ALIMENTO a ) {
-    int erro1 = 0;
-    int erro2 = 0;
-
-    if ( !validaIdAlimento(a) ) {
-        erro2 = -2;
-    }
-    if ( !validaCalAlimento(a) ) {
-        erro2 = -2;
-    }
-    if ( !validaPrecoAlimento(a) ) {
-        erro2 = -2;
-    }
-    if ( !validaNomeAlimento(a) ) {
-        erro1 = -1;
-    }
-
-    return (erro1 + erro2);
-}
-
-/**
  * Faz a validacao do id do alimento
  *
  * @param ALIMENTO variavel do tipo estrutura ALIMENTO
