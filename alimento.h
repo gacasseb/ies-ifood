@@ -28,6 +28,54 @@ LISTA_ALIMENTO * criaListaAlimento() {
     return nova_lista;
 }
 
+
+/**
+ * Busca um alimento pelo id na lista de alimentos
+ *
+ * @param LISTA_ALIMENTO ponteiro para a lista de alimentos
+ * @param id inteiro que referencia o id do usuario a ser procurado na lista
+ *
+ * @return Retorna a posicao do alimento na lista de alimentos
+ **/
+int foundAlimentoById( LISTA_ALIMENTO *l, int id)
+{
+    if ( l->pos_livre == 0 ) {
+        return -1;
+    }
+    int pos = 0;
+
+    while ( pos < l->pos_livre && id != l->alimento[pos].id)
+        pos++;
+
+    if ( pos == l->pos_livre ) {
+        return -1;
+    }
+
+    return pos;
+}
+
+/**
+ * Busca o id de maior numero na lista de alimentos
+ *
+ * @param LISTA_ALIMENTO ponteiro para a lista de alimentos
+ *
+ * @return integer id buscado
+ **/
+int buscaUltimoIdAlimento( LISTA_ALIMENTO *l )
+{
+    if ( l->pos_livre == 0 ) {
+        return 0;
+    }
+
+    int i, id = 0;
+    for ( i = 0; i < l->pos_livre; i++ ) {
+        if ( l->alimento[i].id > id )
+            id = l->alimento[i].id;
+    }
+
+    return id;
+}
+
 /**
  *  Recebe os dados do teclado do usuario e insere na estrutura ALIMENTO
  *
@@ -103,6 +151,47 @@ ALIMENTO registraAlimento( LISTA_ALIMENTO *l, int altera ) {
 }
 
 /**
+ * Faz a validacao do valor calorico
+ *
+ * @param ALIMENTO variavel do tipo estrutura ALIMENTO
+ *
+ * @return Retorna 1 caso for valido
+ **/
+int validaCalAlimento ( ALIMENTO a ) {
+    if ( a.cal < 0 ) {
+        return 0;
+    }
+    return 1;
+}
+
+/**
+ * Faz a validacao de um alimento
+ *
+ * @param ALIMENTO variavel do tipo estrutura ALIMENTO
+ *
+ * @return Retorna o valor do erro
+ **/
+int validaAlimento( ALIMENTO a ) {
+    int erro1 = 0;
+    int erro2 = 0;
+
+    if ( !validaIdAlimento(a) ) {
+        erro2 = -2;
+    }
+    if ( !validaCalAlimento(a) ) {
+        erro2 = -2;
+    }
+    if ( !validaPrecoAlimento(a) ) {
+        erro2 = -2;
+    }
+    if ( !validaNomeAlimento(a) ) {
+        erro1 = -1;
+    }
+
+    return (erro1 + erro2);
+}
+
+/**
  * Insere um alimento e faz a validacao
  *
  * @param LISTA_ALIMENTO *l
@@ -139,12 +228,14 @@ void alteraAlimento( LISTA_ALIMENTO *l ) {
     scanf("%d", &id);
     getchar();
 
-    pos = foundById(l, id);
+    pos = foundAlimentoById(l, id);
 
     if ( pos >= 0 ) {
         // Altera o alimento
         l->alimento[pos] = registraAlimento(l, 1);
         l->alimento[pos].id = id;
+    } else {
+        printf("Erro: alimento nao encontrado\n");
     }
 }
 
@@ -282,53 +373,6 @@ int removeAlimentoById( LISTA_ALIMENTO *l, int id )
 }
 
 /**
- * Busca um alimento pelo id na lista de alimentos
- *
- * @param LISTA_ALIMENTO ponteiro para a lista de alimentos
- * @param id inteiro que referencia o id do usuario a ser procurado na lista
- *
- * @return Retorna a posicao do alimento na lista de alimentos
- **/
-int foundAlimentoById( LISTA_ALIMENTO *l, int id)
-{
-    if ( l->pos_livre == 0 ) {
-        return -1;
-    }
-    int pos = 0;
-
-    while ( pos < l->pos_livre && id != l->alimento[pos].id)
-        pos++;
-
-    if ( pos == l->pos_livre ) {
-        return -1;
-    }
-
-    return pos;
-}
-
-/**
- * Busca o id de maior numero na lista de alimentos
- *
- * @param LISTA_ALIMENTO ponteiro para a lista de alimentos
- *
- * @return integer id buscado
- **/
-int buscaUltimoIdAlimento( LISTA_ALIMENTO *l )
-{
-    if ( l->pos_livre == 0 ) {
-        return 0;
-    }
-
-    int i, id = 0;
-    for ( i = 0; i < l->pos_livre; i++ ) {
-        if ( l->alimento[i].id > id )
-            id = l->alimento[i].id;
-    }
-
-    return id;
-}
-
-/**
  * Insere um alimento no final da lista de alimentos
  *
  * @param LISTA_ALIMENTO ponteiro para a lista de alimentos
@@ -387,20 +431,6 @@ int validaAlimento( ALIMENTO a ) {
  **/
 int validaIdAlimento ( ALIMENTO a ) {
     if ( a.id < 0 ) {
-        return 0;
-    }
-    return 1;
-}
-
-/**
- * Faz a validacao do valor calorico
- *
- * @param ALIMENTO variavel do tipo estrutura ALIMENTO
- *
- * @return Retorna 1 caso for valido
- **/
-int validaCalAlimento ( ALIMENTO a ) {
-    if ( a.cal < 0 ) {
         return 0;
     }
     return 1;

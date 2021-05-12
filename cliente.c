@@ -77,25 +77,8 @@ CLIENTE registraCliente( LISTA_CLIENTE *l, int altera )
     cliente.mes = m;
     cliente.ano = a;
 
-    // // Faz a inserção da quantidade de viagens
-    // printf("Voce deseja inserir a quantidade de viagens?\n");
-    // printf("0 - Nao\n");
-    // printf("1 - Sim\n");
-    // scanf("%c", &entrada);
-    // getchar();
-
-    // if ( entrada == '1' ) {
-    //     printf("Insira a quantidade de viagens. (apenas digitos).\n");
-    //     int qtd_viagem;
-    //     scanf("%d", &qtd_viagem);
-    //     getchar();
-    //     cliente.qtd_viagem = qtd_viagem;
-    // } else {
-    //     cliente.qtd_viagem = 0;
-    // }
-
     // Faz a inserção da quantidade de viagens
-    printf("Voce deseja inserir a o historico de pedidos?\n");
+    printf("Voce deseja inserir o historico de pedidos?\n");
     printf("0 - Nao\n");
     printf("1 - Sim\n");
     scanf("%c", &entrada);
@@ -111,16 +94,17 @@ CLIENTE registraCliente( LISTA_CLIENTE *l, int altera )
             scanf("%d", &aux);
             getchar();
             cliente.historico[i] = aux;
-            // if ( altera == 0 ) {
-            //     cliente.historico_atual[i] = aux;
-            // }
+            i++;
+        }
+        // Seta como 0 o resto do array de historico atual
+        while ( i < 50 ) {
+            cliente.historico[i] = 0;
             i++;
         }
     } else if ( entrada == '0' ) {
         int x;
         for ( x = 0; x < 50; x++ ) {
             cliente.historico[x] = 0;
-            // cliente.historico_atual[x] = 0;
         }
     }
 
@@ -134,19 +118,27 @@ CLIENTE registraCliente( LISTA_CLIENTE *l, int altera )
     if ( entrada == '1' ) {
         int i = 0;
         int aux = 1;
+        int j, existe;
 
         while ( aux != 0 ) {
             printf("Insira o ID do alimento a ser inserido no historico atual. (apenas digitos)\n");
             printf("Digite 0 para prosseguir com o cadastro.\n");
             scanf("%d", &aux);
             getchar();
-            cliente.historico_atual[i] = aux;
-            if ( altera == 0 ) {
-                cliente.historico_atual[i] = aux;
+            // Verifica se existe no historico
+            existe = 0;
+            for ( j=0; j<50; j++ ) {
+                if ( cliente.historico[j] == aux ) {
+                    existe = 1;
+                }
             }
-            i++;
+            if ( existe == 0 ) {
+                printf("Erro: o ID Inserido nao esta no historico completo, por favor, insira um ID que exista no historico completo de pedidos.\n");
+            } else {
+                cliente.historico_atual[i] = aux;
+                i++;
+            }
         }
-
         // Seta como 0 o resto do array de historico atual
         for ( ; i < 50; i++ ) {
             cliente.historico_atual[i] = 0;
@@ -339,9 +331,6 @@ void imprimeCliente( LISTA_CLIENTE *l, int id )
         printf("ID: %d\n", l->cliente[pos].id);
         printf("Nome completo: %s\n", l->cliente[pos].nome_completo);
         printf("Data de nascimento: %d/%d/%d\n", l->cliente[pos].dia, l->cliente[pos].mes, l->cliente[pos].ano);
-        if ( l->cliente[pos].qtd_viagem > 0 ) {
-            printf("Quantidade de viagens: %d\n", l->cliente[pos].qtd_viagem);
-        }
         int i = 0;
         printf("Historico de pedidos do cliente: ");
         while (l->cliente[pos].historico[i] != 0 ) {
